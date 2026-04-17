@@ -47,17 +47,15 @@ struct PDFToPPM: ParsableCommand {
         }
 
         let format: PDFRenderer.ImageFormat = tiff ? .tiff : jpeg ? .jpeg : .png
-        let first = max(firstPage - 1, 0)
-        let last  = min((lastPage ?? document.pageCount) - 1, document.pageCount - 1)
 
-        guard first <= last else {
+        guard let range = document.resolvePageRange(firstPage: firstPage, lastPage: lastPage) else {
             throw ValidationError("Page range is empty (first: \(firstPage), last: \(lastPage ?? document.pageCount))")
         }
 
         let digits = String(document.pageCount).count
         let fmt = "%0\(digits)d"
 
-        for i in first...last {
+        for i in range {
             guard let page = document.page(at: i) else {
                 fputs("Warning: could not load page \(i + 1)\n", stderr)
                 continue

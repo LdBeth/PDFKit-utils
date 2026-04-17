@@ -1,6 +1,16 @@
 import PDFKit
 import Foundation
 
+extension PDFDocument {
+    /// Resolves a 1-based inclusive page range into a 0-based index range,
+    /// clamped to the document's page bounds. Returns nil if the range is empty.
+    public func resolvePageRange(firstPage: Int = 1, lastPage: Int? = nil) -> ClosedRange<Int>? {
+        let first = max(firstPage - 1, 0)
+        let last  = min((lastPage ?? pageCount) - 1, pageCount - 1)
+        return first <= last ? first...last : nil
+    }
+}
+
 public struct PDFTextExtractor {
 
     public static func extractText(
@@ -9,15 +19,11 @@ public struct PDFTextExtractor {
         lastPage: Int? = nil,
         pageBreak: Bool = true
     ) -> String {
-        let first = max(firstPage - 1, 0)
-        let last  = min((lastPage ?? document.pageCount) - 1, document.pageCount - 1)
-        guard first <= last else { return "" }
-
-        var pages: [String] = []
-        for i in first...last {
-            guard let page = document.page(at: i) else { continue }
-            pages.append(page.string ?? "")
+        guard let range = document.resolvePageRange(firstPage: firstPage, lastPage: lastPage) else {
+            return ""
         }
-        return pages.joined(separator: pageBreak ? "\u{000C}" : "\n")
+        return range
+            .compactMap { document.page(at: $0).map { $0.string ?? "" } }
+            .joined(separator: pageBreak ? "\u{000C}" : "\n")
     }
 }
