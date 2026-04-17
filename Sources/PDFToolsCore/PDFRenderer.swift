@@ -11,12 +11,14 @@ public struct PDFRenderer {
 
     public var fileExtension: String { rawValue }
 
+    private static nonisolated(unsafe) let utiMap: [ImageFormat: UTType] = [
+      .png: .png,
+      .jpeg: .jpeg,
+      .tiff: .tiff,
+    ]
+
     var utiIdentifier: CFString {
-      switch self {
-      case .png: return "public.png" as CFString
-      case .jpeg: return "public.jpeg" as CFString
-      case .tiff: return "public.tiff" as CFString
-      }
+      Self.utiMap[self]!.identifier as CFString
     }
   }
 
