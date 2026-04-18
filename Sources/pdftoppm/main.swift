@@ -10,7 +10,7 @@ struct PDFToPPM: ParsableCommand {
     abstract: "Convert PDF pages to raster images (Apple PDFKit)"
   )
 
-  @Argument(help: "Input PDF file path")
+  @Argument(help: "Input PDF file path ('-' to read from stdin)")
   var input: String
 
   @Argument(help: "Output file prefix (e.g. 'out' → 'out-001.png')")
@@ -41,9 +41,19 @@ struct PDFToPPM: ParsableCommand {
   var jpegQuality: Int = 85
 
   mutating func run() throws {
-    let url = URL(fileURLWithPath: (input as NSString).expandingTildeInPath)
-    guard let document = PDFDocument(url: url) else {
-      throw ValidationError("Cannot open PDF: \(input)")
+    let document: PDFDocument
+    if input == "-" {
+      let data = FileHandle.standardInput.readDataToEndOfFile()
+      guard let doc = PDFDocument(data: data) else {
+        throw ValidationError("Cannot parse PDF from stdin")
+      }
+      document = doc
+    } else {
+      let url = URL(fileURLWithPath: (input as NSString).expandingTildeInPath)
+      guard let doc = PDFDocument(url: url) else {
+        throw ValidationError("Cannot open PDF: \(input)")
+      }
+      document = doc
     }
 
     let format: PDFRenderer.ImageFormat = tiff ? .tiff : jpeg ? .jpeg : .png

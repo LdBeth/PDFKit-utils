@@ -104,17 +104,17 @@ struct ExtractTextTests {
 
   @Test func formFeedSeparatorExactlyOncePerPageBoundary() throws {
     let doc = try #require(PDFDocument(url: readmePDFURL()))
-    try #require(doc.pageCount == 2)
+    try #require(doc.pageCount == 3)
     let out = PDFTextExtractor.extractText(from: doc, pageBreak: true)
     let parts = out.components(separatedBy: "\u{000C}")
-    #expect(parts.count == 2)
+    #expect(parts.count == 3)
     #expect(parts[0].contains("PDFTools"))
     #expect(parts[1].contains("Resolution in DPI"))
   }
 
   @Test func newlineSeparatorHasNoFormFeed() throws {
     let doc = try #require(PDFDocument(url: readmePDFURL()))
-    try #require(doc.pageCount == 2)
+    try #require(doc.pageCount == 3)
     let out = PDFTextExtractor.extractText(from: doc, pageBreak: false)
     #expect(!out.contains("\u{000C}"))
     // Two pages joined by "\n": the boundary newline must be present in addition
@@ -125,7 +125,7 @@ struct ExtractTextTests {
 
   @Test func pageRangeExtractsOnlyRequestedPage() throws {
     let doc = try #require(PDFDocument(url: readmePDFURL()))
-    try #require(doc.pageCount == 2)
+    try #require(doc.pageCount == 3)
     let p1 = PDFTextExtractor.extractText(from: doc, firstPage: 1, lastPage: 1)
     let p2 = PDFTextExtractor.extractText(from: doc, firstPage: 2, lastPage: 2)
     #expect(!p1.contains("\u{000C}"))

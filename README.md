@@ -13,7 +13,7 @@ USAGE: pdftotext <input> [<output>] [-f <f>] [-l <l>] [--nopgbrk]
 
 ARGUMENTS:
   <input>    Input PDF file path
-  <output>   Output text file path (omit to write to stdout)
+  <output>   Output text file path (omit to derive from input; '-' for stdout)
 
 OPTIONS:
   -f <f>     First page to extract (1-based, default: 1)
@@ -21,13 +21,18 @@ OPTIONS:
   --nopgbrk  Do not insert form feed between pages
 ```
 
+If `<output>` is omitted, `document.pdf` is written to `document.txt`. Pass `-` to write to stdout.
+
 **Examples:**
 
 ```sh
-# Print all text to stdout
+# Convert document.pdf -> document.txt
 pdftotext document.pdf
 
-# Save to file
+# Write to stdout
+pdftotext document.pdf -
+
+# Save to a specific file
 pdftotext document.pdf output.txt
 
 # Extract only pages 3–5
@@ -49,7 +54,7 @@ USAGE: pdftoppm <input> <output-prefix> [-r <r>] [-f <f>] [-l <l>]
                 [--scale-to <n>] [--jpeg-quality <n>]
 
 ARGUMENTS:
-  <input>          Input PDF file path
+  <input>          Input PDF file path ('-' to read from stdin)
   <output-prefix>  Output filename prefix (e.g. "out" → "out-001.png")
 
 OPTIONS:
@@ -77,6 +82,9 @@ pdftoppm document.pdf pages --jpeg --scale-to 1200
 
 # Convert pages 2–4 to TIFF
 pdftoppm document.pdf pages -f 2 -l 4 --tiff
+
+# Read PDF from stdin
+cat document.pdf | pdftoppm - pages
 ```
 
 Output files are named `<prefix>-001.png`, `<prefix>-002.png`, etc., with zero-padding based on total page count.

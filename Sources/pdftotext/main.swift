@@ -13,7 +13,7 @@ struct PDFToText: ParsableCommand {
   @Argument(help: "Input PDF file path")
   var input: String
 
-  @Argument(help: "Output text file path (omit to write to stdout)")
+  @Argument(help: "Output text file path (omit to derive from input; '-' for stdout)")
   var output: String?
 
   @Option(name: .customShort("f"), help: "First page to extract (1-based, default: 1)")
@@ -38,11 +38,19 @@ struct PDFToText: ParsableCommand {
       pageBreak: !nopgbrk
     )
 
-    if let outputPath = output {
+    let outputPath: String
+    if let explicit = output {
+      outputPath = explicit
+    } else {
+      let inputURL = URL(fileURLWithPath: (input as NSString).expandingTildeInPath)
+      outputPath = inputURL.deletingPathExtension().appendingPathExtension("txt").path
+    }
+
+    if outputPath == "-" {
+      print(text, terminator: "")
+    } else {
       let outURL = URL(fileURLWithPath: (outputPath as NSString).expandingTildeInPath)
       try text.write(to: outURL, atomically: true, encoding: .utf8)
-    } else {
-      print(text, terminator: "")
     }
   }
 }
