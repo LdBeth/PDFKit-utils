@@ -1,6 +1,7 @@
 # PDFTools
 
-Command-line tools for extracting text and rendering images from PDFs, built on Apple's PDFKit framework.
+Command-line tools for extracting text and rendering images from PDFs, built on
+Apple's PDFKit framework.
 
 ## Tools
 
@@ -21,7 +22,8 @@ OPTIONS:
   --nopgbrk  Do not insert form feed between pages
 ```
 
-If `<output>` is omitted, `document.pdf` is written to `document.txt`. Pass `-` to write to stdout.
+If `<output>` is omitted, `document.pdf` is written to `document.txt`. Pass `-`
+to write to stdout.
 
 **Examples:**
 
@@ -87,7 +89,8 @@ pdftoppm document.pdf pages -f 2 -l 4 --tiff
 cat document.pdf | pdftoppm - pages
 ```
 
-Output files are named `<prefix>-001.png`, `<prefix>-002.png`, etc., with zero-padding based on total page count.
+Output files are named `<prefix>-001.png`, `<prefix>-002.png`, etc., with
+zero-padding based on total page count.
 
 ---
 
