@@ -6,7 +6,13 @@ public struct PDFRenderer {
   public enum ImageFormat: String, CaseIterable {
     case png, jpeg, tiff
 
-    public var fileExtension: String { rawValue }
+    public var fileExtension: String {
+      switch self {
+      case .png: return "png"
+      case .jpeg: return "jpg"
+      case .tiff: return "tif"
+      }
+    }
 
     private static nonisolated(unsafe) let utiMap: [ImageFormat: UTType] = [
       .png: .png,

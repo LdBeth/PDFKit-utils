@@ -25,19 +25,23 @@ struct PDFToPPM: ParsableCommand {
   @Option(name: .customShort("l"), help: "Last page (default: last page)")
   var lastPage: Int?
 
-  @Flag(name: .long, help: "Output PNG format (default)")
+  @Flag(name: .customLong("png", withSingleDash: true), help: "Output PNG format (default)")
   var png: Bool = false
 
-  @Flag(name: .long, help: "Output JPEG format")
+  @Flag(name: .customLong("jpeg", withSingleDash: true), help: "Output JPEG format")
   var jpeg: Bool = false
 
-  @Flag(name: .long, help: "Output TIFF format")
+  @Flag(name: .customLong("tiff", withSingleDash: true), help: "Output TIFF format")
   var tiff: Bool = false
 
-  @Option(name: .long, help: "Scale so longest side equals N pixels (overrides -r)")
+  @Option(
+    name: .customLong("scale-to", withSingleDash: true),
+    help: "Scale so longest side equals N pixels (overrides -r)")
   var scaleTo: Int?
 
-  @Option(name: .long, help: "JPEG quality 0–100 (default: 85)")
+  @Option(
+    name: .customLong("jpeg-quality", withSingleDash: true),
+    help: "JPEG quality 0–100 (default: 85)")
   var jpegQuality: Int = 85
 
   mutating func run() throws {
