@@ -52,22 +52,22 @@ Convert PDF pages to raster images (PNG, JPEG, or TIFF).
 
 ```
 USAGE: pdftoppm <input> <output-prefix> [-r <r>] [-f <f>] [-l <l>]
-                [--png] [--jpeg] [--tiff]
-                [--scale-to <n>] [--jpeg-quality <n>]
+                [-png] [-jpeg] [-tiff]
+                [-scale-to <n>] [-jpeg-quality <n>]
 
 ARGUMENTS:
   <input>          Input PDF file path ('-' to read from stdin)
   <output-prefix>  Output filename prefix (e.g. "out" → "out-001.png")
 
 OPTIONS:
-  -r <r>                Resolution in DPI (default: 150)
-  -f <f>                First page (1-based, default: 1)
-  -l <l>                Last page (default: last page)
-  --png                 Output PNG format (default)
-  --jpeg                Output JPEG format
-  --tiff                Output TIFF format
-  --scale-to <n>        Scale so the longest side equals N pixels (overrides -r)
-  --jpeg-quality <n>    JPEG quality 0–100 (default: 85)
+  -r <r>               Resolution in DPI (default: 150)
+  -f <f>               First page (1-based, default: 1)
+  -l <l>               Last page (default: last page)
+  -png                 Output PNG format (default)
+  -jpeg                Output JPEG format
+  -tiff                Output TIFF format
+  -scale-to <n>        Scale so the longest side equals N pixels (overrides -r)
+  -jpeg-quality <n>    JPEG quality 0–100 (default: 85)
 ```
 
 **Examples:**
@@ -80,10 +80,10 @@ pdftoppm document.pdf pages
 pdftoppm document.pdf pages -f 1 -l 1 -r 300
 
 # Convert to JPEG, scale longest side to 1200px
-pdftoppm document.pdf pages --jpeg --scale-to 1200
+pdftoppm document.pdf pages -jpeg -scale-to 1200
 
 # Convert pages 2–4 to TIFF
-pdftoppm document.pdf pages -f 2 -l 4 --tiff
+pdftoppm document.pdf pages -f 2 -l 4 -tiff
 
 # Read PDF from stdin
 cat document.pdf | pdftoppm - pages
