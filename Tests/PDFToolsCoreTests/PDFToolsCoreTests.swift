@@ -148,8 +148,8 @@ struct ImageFormatTests {
 
   @Test func fileExtensions() {
     #expect(PDFRenderer.ImageFormat.png.fileExtension == "png")
-    #expect(PDFRenderer.ImageFormat.jpeg.fileExtension == "jpeg")
-    #expect(PDFRenderer.ImageFormat.tiff.fileExtension == "tiff")
+    #expect(PDFRenderer.ImageFormat.jpeg.fileExtension == "jpg")
+    #expect(PDFRenderer.ImageFormat.tiff.fileExtension == "tif")
   }
 
   @Test func allCasesCount() {
