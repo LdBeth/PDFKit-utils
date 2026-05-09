@@ -1,5 +1,11 @@
 # PDFKit CLI tools (pdftotext, pdftoppm)
 
+## Layout
+
+- `Sources/PDFToolsCore/` — shared `PDFTextExtractor`, `PDFRenderer` (PDFKit-backed).
+- `Sources/pdftotext/`, `Sources/pdftoppm/` — thin `ArgumentParser` front-ends.
+- Requires Swift 6.0 toolchain, macOS 14+.
+
 ## Build & test
 
 - Build: `swift build` (release: `swift build -c release`)
