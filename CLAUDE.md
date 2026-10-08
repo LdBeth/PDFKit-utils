@@ -2,18 +2,21 @@
 
 ## Layout
 
-- `Sources/PDFToolsCore/` — shared `PDFTextExtractor`, `PDFRenderer` (PDFKit-backed).
+- `Sources/PDFToolsCore/` — shared `PDFTextExtractor`, `PDFRenderer`
+  (PDFKit-backed).
 - `Sources/pdftotext/`, `Sources/pdftoppm/` — thin `ArgumentParser` front-ends.
 - Requires Swift 6.0 toolchain, macOS 14+.
 
 ## Build & test
 
 - Build: `swift build` (release: `swift build -c release`)
-- Tests: `./run-tests.sh` — NOT `swift test`. swift-testing is resolved via
-  `$CLT/Library/Developer/Frameworks`; plain `swift test` errors with
-  `no such module 'Testing'`.
-- SourceKit/LSP does not see the `-F` framework path, so `Testing` shows as a
-  missing-module diagnostic in the editor. Ignore it; the test run is
+- Tests: `./run-tests.sh` (or `swift test` with the same flags). Plain
+  `swift test` fails with `plugin for module 'TestingMacros' not found`: the
+  macro plugin lives in `plugins/testing/` under the CLT host plugin dir, which
+  the compiler does not search by default. The wrapper is just `swift test`
+  with `-Xswiftc -plugin-path` pointed at it.
+- SourceKit/LSP does not see the `-plugin-path` flag, so `Testing` shows as a
+  missing-module diagnostic in the editor. Ignore it; the wrapper run is
   authoritative.
 
 ## Fixture coupling
